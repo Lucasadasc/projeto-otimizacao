@@ -10,14 +10,16 @@ def fobj(x, y):
     f10 = calcular_f10(x, y)
     zsh = calcular_zhs()
 
-    x1=25*x
-    fobj = f10 * zsh + a * np.cos(x1 / 30)
-    
+    fobj = f10 * zsh 
+        
     return fobj
 
 def calcular_f10(x, y):
-    x1=25*x
-    x2=25*y
+    x_normalizado = x / 250
+    y_normalizado = y / 250
+
+    x1=25*x_normalizado
+    x2=25*y_normalizado
     
     # F10=-a*exp(-b*sqrt((x1.^2+x2.^2)/2))-exp((cos(c*x1)+cos(c*x2))/2)+exp(1);
     f10 = -a * np.exp(-b * np.sqrt((x1**2 + x2**2) / 2)) - np.exp((np.cos(c * x1) + np.cos(c * x2)) / 2) + np.exp(1)

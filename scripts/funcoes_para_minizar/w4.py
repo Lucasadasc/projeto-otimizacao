@@ -6,8 +6,8 @@ def w4(x, y):
     z = schwefel(x, y)
     valor_fobj = fobj(x, y)
 
-    x = x/250
-    y = y/250
-    r = rosenbrock(x, y)
+    x_normalizado = x/250
+    y_normalizado = y/250
+    r = rosenbrock(x_normalizado, y_normalizado)
 
     return np.sqrt(r**2 + z**2) + valor_fobj
