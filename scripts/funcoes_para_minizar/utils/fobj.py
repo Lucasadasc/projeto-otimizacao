@@ -1,7 +1,6 @@
 
 import numpy as np
 
-
 a=500
 b=0.1
 c=0.5*np.pi # c=0.5*%pi;
@@ -25,16 +24,13 @@ def calcular_f10(x, y):
 
     return f10
 
+# zsh(i,j)=0.5-((sin(sqrt(xs(i)^2+ys(j)^2)))^2-0.5)./(1+0.1*(xs(i)^2+ys(j)^2))^2;
 def calcular_zhs():
-    xs = np.arange(-10, 10.1, 0.1) # xs =-10:0.1:10;
-    ys = np.arange(-10, 10.1, 0.1) # ys =-10:0.1:10;
+    xs = np.asarray(np.arange(-10, 10.1, 0.1)) # xs =-10:0.1:10;
+    ys = np.asarray(np.arange(-10, 10.1, 0.1)) 
 
-    nx = len(xs)
-    ny = len(ys)
+    numerador = np.sin(np.sqrt(xs**2 + ys**2))**2 -0.5
+    denominador = (1+0.1*(xs**2 + ys**2))**2
 
-    zsh = np.zeros((nx, ny))
-    for i in range(nx):
-        for j in range(ny):
-            zsh[i, j] = 0.5 - ((np.sin(np.sqrt(xs[i]**2 + ys[j]**2)))**2 - 0.5) / (1 + 0.1 * (xs[i]**2 + ys[j]**2))**2
+    return 0.5 - numerador / denominador
 
-    return zsh

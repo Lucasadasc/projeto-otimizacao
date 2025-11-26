@@ -1,34 +1,34 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+from scripts.funcoes_para_minizar import w18
 
-# //
-# [x,y]=meshgrid(-500:5:500,-500:5:500);
-# //
-# z=-x.*sin(sqrt(abs(x)))-y.*sin(sqrt(abs(y)));
-# x=x/250;
-# y=y/250;
-# // r: Rosenbrock's function
-# r=100*(y-x.^2).^2+(1-x).^2;
-# r1=(y-x.^2).^2+(1-x).^2;
-# rd=1+r1;
-# //
-# x1=25*x;
-# x2=25*y;
-# xs =-10:0.1:10;
-# ys =-10:0.1:10;
-# a=500;
-# b=0.1;
-# c=0.5*%pi;
-# //
-# F10=-a*exp(-b*sqrt((x1.^2+x2.^2)/2))-exp((cos(c*x1)+cos(c*x2))/2)+exp(1);
-# //
-# [n nx]=size(xs);
-# [n ny]=size(ys);
-# for i=1:nx
-# for j=1:ny
-# zsh(i,j)=0.5-((sin(sqrt(xs(i)^2+ys(j)^2)))^2-0.5)./(1+0.1*(xs(i)^2+ys(j)^2))^2;
-# end
-# end
-# //
-# Fobj=F10.*zsh//+a*cos(x1/30);
+# Constantes de domínio
+LIMITE_MIN = -500.0
+LIMITE_MAX = 500.0
 
-# w4=sqrt(r.^2+z.^2)+Fobj;
-# w15=z.*exp(cos(r1));
+def plotar_funcao_objetivo(intervalo=201):
+
+    # 1. Criar um grid de pontos (X, Y)
+    x = np.linspace(LIMITE_MIN, LIMITE_MAX, intervalo)
+    y = np.linspace(LIMITE_MIN, LIMITE_MAX, intervalo)
+    X, Y = np.meshgrid(x, y)
+
+    # 2. Calcular os valores da função objetivo para cada ponto no grid
+    Z = w18(X, Y)
+
+    # 3. Plotar a superfície 3D
+    fig = plt.figure(figsize=(10, 7))
+    ax = fig.add_subplot(111, projection='3d')
+    surf = ax.plot_surface(X, Y, Z, cmap=plt.cm.viridis, linewidth=0, antialiased=False)
+
+    ax.set_title('Função Objetivo W18')
+    ax.set_xlabel('X axis')
+    ax.set_ylabel('Y axis')
+    ax.set_zlabel('Z axis (W18 value)')
+    fig.colorbar(surf, shrink=0.5, aspect=5)
+    
+    plt.show()
+
+if __name__ == "__main__":
+    plotar_funcao_objetivo()
