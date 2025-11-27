@@ -7,7 +7,8 @@ def calcular_pso(
     limites=(-500, 500),
     w=0.7,        # inércia
     c1=2,       # coeficiente cognitivo
-    c2=2        # coeficiente social
+    c2=2,       # coeficiente social
+    capturar_posicoes=False  # capturar posições das partículas para visualização
 ):
     """
     Implementa o algoritmo PSO para minimizar a função W18.
@@ -24,6 +25,7 @@ def calcular_pso(
     - melhor_posicao: coordenadas (x, y) do mínimo encontrado
     - melhor_valor: valor mínimo encontrado
     - historico: lista com melhor valor em cada iteração
+    - posicoes_particulas: (se capturar_posicoes=True) lista das posições de todas as partículas em cada iteração
     """
     
     # Inicialização do enxame
@@ -35,6 +37,9 @@ def calcular_pso(
     
     # Histórico de convergência
     historico = []
+    
+    # Capturar posições das partículas (se solicitado)
+    posicoes_particulas = [] if capturar_posicoes else None
     
     # Loop principal do PSO
     for iteracao in range(max_iteracoes):
@@ -70,6 +75,11 @@ def calcular_pso(
             # Aplicar limites de busca
             particula.posicao = np.clip(particula.posicao, limites[0], limites[1])
         
+        # Capturar posições das partículas (se solicitado)
+        if capturar_posicoes:
+            posicoes_iteracao = [particula.posicao.copy() for particula in enxame]
+            posicoes_particulas.append(posicoes_iteracao)
+        
         # Registrar histórico
         historico.append(melhor_global_valor)
         
@@ -79,8 +89,12 @@ def calcular_pso(
                   f"Melhor valor = {melhor_global_valor:.6f}")
     
     print("\nOtimização concluída!")
+    print(melhor_global_valor)
     print(f"Melhor posição encontrada: x = {melhor_global_posicao[0]:.4f}, "
           f"y = {melhor_global_posicao[1]:.4f}")
     print(f"Valor mínimo: {melhor_global_valor:.6f}")
     
-    return melhor_global_posicao, melhor_global_valor, historico
+    if capturar_posicoes:
+        return melhor_global_posicao, melhor_global_valor, historico, posicoes_particulas
+    else:
+        return melhor_global_posicao, melhor_global_valor, historico

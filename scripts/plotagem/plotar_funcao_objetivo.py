@@ -2,6 +2,7 @@ import numpy as np
 import plotly.graph_objects as go
 from scripts.funcoes_para_minizar import w18
 
+
 # Constantes de domínio
 LIMITE_MIN = -500.0
 LIMITE_MAX = 500.0

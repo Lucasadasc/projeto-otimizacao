@@ -14,7 +14,6 @@ class Particula:
     def avaliar(self):
         """Avalia a função objetivo na posição atual"""
         resultado = w18(self.posicao[0], self.posicao[1])
-        print(resultado)
         # Garantir que retorna um escalar
         if isinstance(resultado, np.ndarray):
             return float(np.sum(resultado))  # ou np.mean(resultado) dependendo do contexto
