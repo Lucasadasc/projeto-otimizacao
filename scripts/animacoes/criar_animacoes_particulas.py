@@ -6,7 +6,7 @@ from scripts.algoritmos import calcular_pso
 
 def criar_animacao_particulas(
     num_particulas=15,
-    max_iteracoes=50,
+    max_iteracoes=100,
     limites=(-500, 500),
     salvar_gif=True,
     nome_arquivo="pso_animacao.html",
@@ -27,12 +27,19 @@ def criar_animacao_particulas(
     print("Executando PSO para criar animação...")
     
     # Executar PSO capturando as posições das partículas
-    melhor_posicao, melhor_valor, historico, posicoes_particulas = calcular_pso(
+    dados_pso = calcular_pso(
         num_particulas=num_particulas,
         max_iteracoes=max_iteracoes,
         limites=limites,
-        capturar_posicoes=True
+        capturar_posicoes=True,
+        max_iteracoes_sem_melhoria= 15
     )
+
+    melhor_posicao = dados_pso["melhor_posicao"]
+    melhor_valor = dados_pso["melhor_valor"]
+    historico = dados_pso["historico"]
+    posicoes_particulas = dados_pso["posicoes_particulas"]
+    quantidade_iteracoes_realizadas = dados_pso["quantidade_iteracoes_realizadas"]
     
     print("Criando animação...")
     
@@ -41,11 +48,8 @@ def criar_animacao_particulas(
     y = np.linspace(limites[0], limites[1], resolucao)
     X, Y = np.meshgrid(x, y)
     Z = w18(X, Y)
-    
-    # Preparar dados para animação
-    frames = []
-    
-    # Cores para diferentes partículas
+
+    frames = []    
     cores = [
         'red', 'blue', 'lime', 'orange', 'purple', 'brown', 'pink', 'gray',
         'olive', 'cyan', 'magenta', 'yellow', 'lightblue', 'lightgreen',
@@ -217,7 +221,6 @@ def criar_animacao_particulas(
         )]
     )
     
-    # Salvar arquivo se solicitado
     if salvar_gif:
         if not nome_arquivo.endswith('.html'):
             nome_arquivo += '.html'
@@ -226,8 +229,14 @@ def criar_animacao_particulas(
         print(caminho_completo)
         fig.write_html(caminho_completo)
         print(f"Animação salva como: {caminho_completo}")
-    
-
-    # fig.show()
+        
+        print(f"O arquivo foi salvo. Foram necessarias {quantidade_iteracoes_realizadas} iterações para criar a animação.")
+        
+        print("Deseja abrir o arquivo agora? (s/n)")
+        resposta = input().strip().lower()
+        if resposta == 's':
+            os.startfile(caminho_completo)
+    else:
+        fig.show()
     
     return melhor_posicao, melhor_valor, historico

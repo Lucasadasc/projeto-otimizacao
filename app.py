@@ -14,8 +14,7 @@ def app():
     if opcao == '1':
         return plotar_funcao_objetivo()
     elif opcao == '2':
-        dados, valor, historico = calcular_pso()
-        return (f"Melhor posição: {dados}, Valor da função objetivo: {valor}")
+        calcular_pso()
     elif opcao == '3':
         print("Criando animação 2D da movimentação das partículas...")
         return criar_animacao_particulas()
