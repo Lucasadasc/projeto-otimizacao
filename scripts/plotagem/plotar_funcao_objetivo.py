@@ -15,7 +15,7 @@ def plotar_funcao_objetivo():
 
     # Calculando os valores da função objetivo para cada ponto no grid
     Z = w18(X, Y)
-    print(np.min(Z), np.max(Z))
+    print("Minimo da função:", np.min(Z))
 
     # Plotando a superfície 3D com Plotly
     fig = go.Figure(data=[
