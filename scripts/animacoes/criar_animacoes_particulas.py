@@ -2,15 +2,13 @@ import os
 import numpy as np
 import plotly.graph_objects as go
 from scripts.funcoes_para_minizar import w18
-from scripts.algoritmos import calcular_pso
+from scripts.algoritmos import calcular_pso, calcular_algoritmo_genetico
+from constants import constantes_pso, constantes_ag
 
 def criar_animacao_particulas(
-    num_particulas=15,
-    max_iteracoes=100,
-    limites=(-500, 500),
+    algoritmo_selecionado="pso",
+    duracao_frame=500,
     salvar_gif=True,
-    nome_arquivo="pso_animacao.html",
-    duracao_frame=500  # milissegundos por frame
 ):
     """
     Cria uma animação da movimentação das partículas do PSO.
@@ -22,25 +20,37 @@ def criar_animacao_particulas(
     - salvar_gif: se deve salvar como arquivo HTML
     - nome_arquivo: nome do arquivo a ser salvo
     - duracao_frame: duração de cada frame em milissegundos
+
     """
     
-    print("Executando PSO para criar animação...")
-    
-    # Executar PSO capturando as posições das partículas
-    dados_pso = calcular_pso(
-        num_particulas=num_particulas,
-        max_iteracoes=max_iteracoes,
-        limites=limites,
-        capturar_posicoes=True,
-        max_iteracoes_sem_melhoria= 15
-    )
+    limites = constantes_pso.LIMITES_ESPACO_BUSCA
+    num_particulas = constantes_pso.NUMERO_PARTICULAS
+    max_iteracoes = constantes_pso.MAX_ITERACOES
+    nome_arquivo = f"animacao_posicoes_{algoritmo_selecionado}.html"
 
-    melhor_posicao = dados_pso["melhor_posicao"]
-    melhor_valor = dados_pso["melhor_valor"]
-    historico = dados_pso["historico"]
-    posicoes_particulas = dados_pso["posicoes_particulas"]
-    quantidade_iteracoes_realizadas = dados_pso["quantidade_iteracoes_realizadas"]
-    
+    if algoritmo_selecionado == "pso":
+        print("Executando PSO para criar animação...")
+        dados_algoritmo = calcular_pso(capturar_posicoes=True)
+
+        melhor_posicao = dados_algoritmo["melhor_posicao"]
+        melhor_valor = dados_algoritmo["melhor_valor"]
+        historico = dados_algoritmo["historico"]
+        posicoes_particulas = dados_algoritmo["posicoes_particulas"]
+        quantidade_iteracoes_realizadas = dados_algoritmo["quantidade_iteracoes_realizadas"]
+
+        dados_algoritmo
+    else:
+        print("Executando Algoritmo Genético para criar animação...")
+        dados_algoritmo = calcular_algoritmo_genetico(salvar_posicoes=True)
+
+        num_particulas = constantes_ag.NUMERO_INDIVIDUOS
+        max_iteracoes = constantes_ag.NUMERO_GERACOES
+        melhor_posicao = dados_algoritmo["melhor_posicao"]
+        melhor_valor = dados_algoritmo["melhor_valor"]
+        historico = dados_algoritmo["historico_fitness"]
+        posicoes_particulas = dados_algoritmo["posicoes_populacao"]
+        quantidade_iteracoes_realizadas = dados_algoritmo["quantidade_geracoes_realizadas"]
+
     print("Criando animação...")
     
     resolucao = 201 

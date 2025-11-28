@@ -15,8 +15,8 @@ def plotar_funcao_objetivo():
     X, Y = np.meshgrid(x, y)
 
     # Calculando os valores da função objetivo para cada ponto no grid
-    Z = w18(X, Y)
-    print("Minimo da função:", np.min(Z))
+    Z = w18(X, Y) # Z será uma matriz 2D com os valores da função objetivo
+    print("Minimo da função:", np.min(Z))  # O np.min pega o menor valor de um array numpy 
 
     # Plotando a superfície 3D com Plotly
     fig = go.Figure(data=[

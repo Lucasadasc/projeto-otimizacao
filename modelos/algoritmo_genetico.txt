@@ -1,0 +1,64 @@
+Criar um Algoritmo Genético (AG) para encontrar o mínimo global de uma função tridimensional envolve uma série de passos bem definidos, que simulam o processo de evolução natural.
+
+1. Definição do Problema e Codificação
+
+    - Função Objetivo: Defina claramente a função tridimensional cujo mínimo global você deseja encontrar. Esta função é a base da aptidão (fitness).
+    - Domínio de Busca: Determine os limites (mínimo e máximo) para cada variável no espaço de busca.
+    - Codificação (Representação): Defina como uma solução será representada como um cromossomo no AG.
+    - Comumente: Para funções de otimização contínua, utiliza-se a codificação de números reais (onde o cromossomo é simplesmente a tupla de valores), o que é mais direto do que a codificação binária tradicional.
+
+2. Inicialização da População
+
+    - Crie uma população inicial de cromossomos (soluções) aleatórios.
+    - Cada cromossomo na população deve ser gerado garantindo que os valores estejam dentro do domínio de busca definido.
+    - Exemplo: Se x está entre -10 e 10, gere um valor de x aleatório e uniforme nesse intervalo.
+
+3. Avaliação da Aptidão (Fitness)
+
+    - Defina uma função de aptidão para medir a "qualidade" de cada cromossomo.
+    - Como o objetivo é minimizar a função, a aptidão deve ser inversamente proporcional ao valor da função.
+    - Uma função de aptidão deve ser projetada de forma que valores menores da função resultem em valores de aptidão maiores.
+    - Exemplo Comum: Fitness = 1/(função + epsilon) ou Fitness = -função + constante, onde epsilon é um valor pequeno para evitar divisão por zero, e constante é um valor grande para garantir aptidões positivas (se necessário).
+    - Calcule a aptidão de todos os cromossomos na população inicial.
+
+4. Seleção
+
+    - Escolha os cromossomos pais que serão usados para criar a próxima geração. A seleção é baseada na aptidão: cromossomos com maior aptidão (menor valor da função) têm maior chance de serem selecionados.
+    - Métodos Comuns de Seleção:
+    - Seleção por Roleta: A chance de seleção é proporcional à aptidão.
+    - Seleção por Torneio: Selecione um pequeno grupo aleatório da população e escolha o mais apto desse grupo.
+
+5. Cruzamento (Crossover)
+
+    - Pare os cromossomos pais selecionados e aplique o operador de cruzamento para criar novos cromossomos filhos (a prole).
+    - O cruzamento combina as "características genéticas" dos pais.
+    - Métodos Comuns (para codificação de números reais):
+    - Cruzamento Aritmético: O filho é uma combinação linear dos pais, por exemplo: Filho = alfa x Pai1 + (1-alfa) x Pai2 (onde alfa é um parâmetro).
+    - Cruzamento Simples: Para um cromossomo, escolha um ponto de corte e troque as partes dos pais.
+
+6. Mutação
+
+    - Aplique uma mutação com uma pequena probabilidade em cada cromossomo filho.
+    - A mutação introduz nova diversidade na população, ajudando a explorar o espaço de busca e a evitar a convergência prematura para um mínimo local.
+    - Métodos Comuns (para codificação de números reais):
+    - Mutação Não Uniforme: Altere aleatoriamente um dos genes do cromossomo por um novo valor dentro do domínio de busca. A magnitude da alteração pode diminuir à medida que o AG avança.
+
+7. Substituição (Criação da Nova Geração)
+
+    - A nova população é formada substituindo a população antiga pelos cromossomos filhos gerados (após cruzamento e mutação).
+    - Estratégias de Substituição:
+        -   Geração Estacionária: Apenas alguns dos piores indivíduos são substituídos pelos melhores filhos.
+        -   Substituição Total: A população inteira de filhos (geralmente do mesmo tamanho da população original) substitui a população de pais.
+        -   Elitismo: O melhor cromossomo da geração anterior é garantido a ser copiado para a nova geração, preservando a melhor solução encontrada até agora.
+
+8. Critério de Parada
+
+    - O ciclo dos passos 3 a 7 (Avaliação, Seleção, Cruzamento, Mutação, Substituição) é repetido por múltiplas gerações.
+    - O processo para quando um dos seguintes critérios é atingido:
+    - Número Máximo de Gerações (o mais comum).
+    - A aptidão da melhor solução não melhora significativamente por um certo número de gerações.
+    - A melhor solução encontrada atinge um valor de aptidão alvo predefinido.
+
+9. Resultado
+
+    - Após a parada, o cromossomo com a maior aptidão (o menor valor da função) é a melhor solução encontrada pelo AG, representando a estimativa do mínimo global da função.

@@ -1,15 +1,16 @@
 from .Particula import Particula
 import numpy as np 
+from constants import constantes_pso
 
 def calcular_pso(
-    num_particulas=30,
-    max_iteracoes=100,
-    limites=(-500, 500),
-    w=0.9,        # inércia
-    c1=1.9,       # coeficiente cognitivo
-    c2=1.9,       # coeficiente social
+    num_particulas=constantes_pso.NUMERO_PARTICULAS,
+    max_iteracoes=constantes_pso.MAX_ITERACOES,
+    limites=constantes_pso.LIMITES_ESPACO_BUSCA,
+    w=constantes_pso.PESO_INERCIA,        # inércia
+    c1=constantes_pso.COEFICIENTE_COGNITIVO,       # coeficiente cognitivo
+    c2=constantes_pso.COEFICIENTE_SOCIAL,       # coeficiente social
     capturar_posicoes=False,  # capturar posições das partículas para visualização
-    max_iteracoes_sem_melhoria=30  # critério de parada por estagnação
+    max_iteracoes_sem_melhoria=constantes_pso.MAX_ITERACOES_SEM_MELHORIA  # critério de parada por estagnação
 ):
     """
     Implementa o algoritmo PSO para minimizar a função W18.
