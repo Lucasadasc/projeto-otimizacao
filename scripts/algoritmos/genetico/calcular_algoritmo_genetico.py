@@ -36,6 +36,7 @@ def calcular_algoritmo_genetico(
     melhor_da_geracao = max(populacao, key=lambda x: x[1])
     valor_w18_inicial = -melhor_da_geracao[1]  # Converter fitness de volta para valor W18
     historico_fitness.append(valor_w18_inicial)
+    numero_execucoes_funcao_objetivo = 0
     
     if melhor_da_geracao[1] > melhor_fitness_global:
         melhor_fitness_global = melhor_da_geracao[1]
@@ -70,6 +71,7 @@ def calcular_algoritmo_genetico(
             # Avaliar fitness dos filhos
             fitness1 = avaliar_fitness(filho1)
             fitness2 = avaliar_fitness(filho2)
+            numero_execucoes_funcao_objetivo += 2
             
             # Adicionar à nova população
             nova_populacao.append((filho1, fitness1))
@@ -134,7 +136,8 @@ def calcular_algoritmo_genetico(
         "tolerancia_melhoria": tolerancia_melhoria,
         "geracoes_sem_melhoria": geracoes_sem_melhoria,
         "numero_geracoes": numero_geracoes,
-        "posicoes_populacao": posicoes_populacao
+        "posicoes_populacao": posicoes_populacao,
+        "numero_execucoes_funcao_objetivo": numero_execucoes_funcao_objetivo
     }
 
     exibir_dados_ag(dados)
@@ -214,6 +217,7 @@ def exibir_dados_ag(dados):
     tolerancia_melhoria = dados['tolerancia_melhoria']
     geracoes_sem_melhoria = dados['geracoes_sem_melhoria']
     numero_geracoes = dados['numero_geracoes']
+    numero_execucoes_funcao_objetivo = dados['numero_execucoes_funcao_objetivo']
 
     print("\n" + "="*70)
     print(" "*20 + "RESULTADOS DO ALGORITMO GENÉTICO")
@@ -224,6 +228,7 @@ def exibir_dados_ag(dados):
     print(f"{'Melhor posição Y':<40} {round(melhor_posicao[1], 2):>28}")
     print(f"{'Valor mínimo encontrado':<40} {round(melhor_valor, 2):>28}")
     print(f"{'Iterações realizadas':<40} {quantidade_geracoes_realizadas:>28}")
+    print(f"{'Número de execuções da função objetivo':<40} {numero_execucoes_funcao_objetivo:>28}")
     print("-"*70)
     print(f"{'Parametros do PSO':<40} {'Valor':>28}")
     print("-"*70)

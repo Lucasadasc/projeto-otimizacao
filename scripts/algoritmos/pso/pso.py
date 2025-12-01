@@ -38,6 +38,7 @@ def calcular_pso(
     melhor_global_posicao = None
     melhor_global_valor = float('inf')
     quantidade_iteracoes_realizadas = 0
+    numero_execucoes_funcao_objetivo = 0
     
     # Histórico de convergência
     historico = []
@@ -56,6 +57,7 @@ def calcular_pso(
         for particula in enxame:
             # Avaliar fitness
             valor_atual = particula.avaliar()
+            numero_execucoes_funcao_objetivo += 1
             
             # Atualizar melhor pessoal
             particula.atualizar_melhor(valor_atual)
@@ -109,7 +111,8 @@ def calcular_pso(
         "melhor_posicao": melhor_global_posicao,
         "melhor_valor": melhor_global_valor,
         "historico": historico,
-        "quantidade_iteracoes_realizadas": quantidade_iteracoes_realizadas
+        "quantidade_iteracoes_realizadas": quantidade_iteracoes_realizadas,
+        "numero_execucoes_funcao_objetivo": numero_execucoes_funcao_objetivo
     }
     
     if capturar_posicoes:
@@ -123,6 +126,7 @@ def exibir_dados_pso(dados_pso, c1, c2, w):
     melhor_posicao = dados_pso["melhor_posicao"]
     melhor_valor = dados_pso["melhor_valor"]
     quantidade_iteracoes_realizadas = dados_pso["quantidade_iteracoes_realizadas"]
+    numero_execucoes_funcao_objetivo = dados_pso["numero_execucoes_funcao_objetivo"]
     
     print("\n" + "="*70)
     print(" "*28 + "RESULTADOS DO PSO")
@@ -133,6 +137,7 @@ def exibir_dados_pso(dados_pso, c1, c2, w):
     print(f"{'Melhor posição Y':<40} {round(melhor_posicao[1], 2):>28}")
     print(f"{'Valor mínimo encontrado':<40} {round(melhor_valor, 2):>28}")
     print(f"{'Iterações realizadas':<40} {quantidade_iteracoes_realizadas:>28}")
+    print(f"{'Número de execuções da função objetivo':<40} {numero_execucoes_funcao_objetivo:>28}")
     print("-"*70)
     print(f"{'Parametros do PSO':<40} {'Valor':>28}")
     print("-"*70)
