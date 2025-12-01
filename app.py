@@ -1,6 +1,6 @@
 from scripts.plotagem import plotar_funcao_objetivo
 from scripts.algoritmos import calcular_pso, calcular_algoritmo_genetico
-from scripts.animacoes import criar_animacao_particulas
+from scripts.animacoes import criar_animacao_particulas, plotar_evolucao_fitness
 
 def app():
     print("Selecione opção desejada")

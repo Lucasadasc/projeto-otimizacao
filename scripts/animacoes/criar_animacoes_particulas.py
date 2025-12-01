@@ -4,6 +4,7 @@ import plotly.graph_objects as go
 from scripts.funcoes_para_minizar import w18
 from scripts.algoritmos import calcular_pso, calcular_algoritmo_genetico
 from constants import constantes_pso, constantes_ag
+from .plotar_evolucao_fitness import plotar_evolucao_fitness
 
 def criar_animacao_particulas(
     algoritmo_selecionado="pso",
@@ -27,6 +28,11 @@ def criar_animacao_particulas(
     num_particulas = constantes_pso.NUMERO_PARTICULAS
     max_iteracoes = constantes_pso.MAX_ITERACOES
     nome_arquivo = f"animacao_posicoes_{algoritmo_selecionado}.html"
+    dados_algoritmo = None
+    melhor_valor = None
+    historico = None
+    posicoes_particulas = None
+    quantidade_iteracoes_realizadas = None
 
     if algoritmo_selecionado == "pso":
         print("Executando PSO para criar animação...")
@@ -37,8 +43,6 @@ def criar_animacao_particulas(
         historico = dados_algoritmo["historico"]
         posicoes_particulas = dados_algoritmo["posicoes_particulas"]
         quantidade_iteracoes_realizadas = dados_algoritmo["quantidade_iteracoes_realizadas"]
-
-        dados_algoritmo
     else:
         print("Executando Algoritmo Genético para criar animação...")
         dados_algoritmo = calcular_algoritmo_genetico(salvar_posicoes=True)
@@ -143,7 +147,7 @@ def criar_animacao_particulas(
                         ),
                         name='Melhor Global' if iteracao == 0 else '',
                         showlegend=(iteracao == 0),
-                        hovertemplate=f'Melhor Solução<br>x: %{{x}}<br>y: %{{y}}<br>Valor: {melhor_valor:.4f}<extra></extra>'
+                        hovertemplate=f'Melhor Solução<br>x: %{{x}}<br>y: %{{y}}<br>Valor: {melhor_valor:.2f}<extra></extra>'
                     )
                 )
         
@@ -152,7 +156,7 @@ def criar_animacao_particulas(
             name=str(iteracao),
             layout=dict(
                 title=f'PSO - Iteração {iteracao + 1}/{len(posicoes_particulas)}<br>'
-                      f'Melhor valor: {historico[iteracao]:.6f}' if iteracao < len(historico) else ''
+                      f'Melhor valor: {historico[iteracao]:.2f}' if iteracao < len(historico) else ''
             )
         ))
     
@@ -166,7 +170,7 @@ def criar_animacao_particulas(
     fig.update_layout(
         title=f'Animação PSO - Função W18<br>'
               f'{num_particulas} partículas, {max_iteracoes} iterações<br>'
-              f'Melhor valor final: {melhor_valor:.6f}',
+              f'Melhor valor final: {melhor_valor:.2f}',
         xaxis=dict(
             title='X',
             range=[limites[0], limites[1]],
@@ -248,5 +252,14 @@ def criar_animacao_particulas(
             os.startfile(caminho_completo)
     else:
         fig.show()
+
+    mostrar_evolução = input("Deseja plotar a evolução do fitness? (s/n): ").strip().lower()
+    if mostrar_evolução == 's':
+        plotar_evolucao_fitness(
+            dados_algoritmo= dados_algoritmo, 
+            algoritmo_selecionado=algoritmo_selecionado, 
+            salvar_grafico=salvar_gif
+        )
+
     
     return melhor_posicao, melhor_valor, historico

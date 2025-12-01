@@ -95,7 +95,7 @@ def calcular_pso(
         historico.append(melhor_global_valor)
         
         # Verificar se houve melhoria nesta iteração
-        if melhor_global_valor >= melhor_valor_anterior:
+        if round(melhor_global_valor, 2) >= round(melhor_valor_anterior, 2):
             iteracoes_sem_melhoria += 1
         melhor_valor_anterior = melhor_global_valor
         
@@ -139,5 +139,6 @@ def exibir_dados_pso(dados_pso, c1, c2, w):
     print(f"{'Coeficiente Cognitivo (c1)':<40} {c1:>28.2f}")
     print(f"{'Coeficiente Social (c2)':<40} {c2:>28.2f}")
     print(f"{'Peso de Inércia (w)':<40} {w:>28.2f}")
+    print(f"Máximo de iterações sem melhoria: {constantes_pso.MAX_ITERACOES_SEM_MELHORIA}")
     print("="*70 + "\n")
 
