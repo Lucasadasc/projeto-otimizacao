@@ -1,6 +1,6 @@
 from .Particula import Particula
 import numpy as np 
-from constants import constantes_pso
+from constants import constantes_pso, minimo_funcao
 
 def calcular_pso(
     num_particulas=constantes_pso.NUMERO_PARTICULAS,
@@ -106,13 +106,19 @@ def calcular_pso(
             print(f"\nParada antecipada na iteração {iteracao + 1}: "
                   f"Sem melhoria por {max_iteracoes_sem_melhoria} iterações consecutivas")
             break
-
+    
+    funcao_convergiu_para_minimo_esperado = False
+    diferenca_para_minimo = abs(melhor_global_valor - minimo_funcao.MINIMO_FUNCAO_W18)
+    if diferenca_para_minimo <= minimo_funcao.TOLERANCIA_DIVERGENCIA:
+        funcao_convergiu_para_minimo_esperado = True
+    
     dados = {
         "melhor_posicao": melhor_global_posicao,
         "melhor_valor": melhor_global_valor,
         "historico": historico,
         "quantidade_iteracoes_realizadas": quantidade_iteracoes_realizadas,
-        "numero_execucoes_funcao_objetivo": numero_execucoes_funcao_objetivo
+        "numero_execucoes_funcao_objetivo": numero_execucoes_funcao_objetivo,
+        "funcao_convergiu_para_minimo_esperado": funcao_convergiu_para_minimo_esperado
     }
     
     if capturar_posicoes:
@@ -138,6 +144,7 @@ def exibir_dados_pso(dados_pso, c1, c2, w):
     print(f"{'Valor mínimo encontrado':<40} {round(melhor_valor, 2):>28}")
     print(f"{'Iterações realizadas':<40} {quantidade_iteracoes_realizadas:>28}")
     print(f"{'Número de execuções da função objetivo':<40} {numero_execucoes_funcao_objetivo:>28}")
+    print(f"{'Convergiu para mínimo esperado':<40} {str(dados_pso.get('funcao_convergiu_para_minimo_esperado', False)):>28}")
     print("-"*70)
     print(f"{'Parametros do PSO':<40} {'Valor':>28}")
     print("-"*70)

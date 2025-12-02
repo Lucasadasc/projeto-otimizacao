@@ -5,4 +5,3 @@ NUMERO_GERACOES = 30 # Número de gerações que o algoritmo irá rodar (critér
 LIMITES_ESPACO_BUSCA = (-500, 500)
 INTENSIDADE_MUTACAO = 10.0
 GERACOES_SEM_MELHORIA = 10  # Número de gerações sem melhoria para parar
-TOLERANCIA_MELHORIA = 1e-6   # Tolerância mínima para considerar melhoria

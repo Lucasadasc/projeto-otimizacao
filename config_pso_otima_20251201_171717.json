@@ -1,0 +1,17 @@
+{
+  "num_particulas": 25,
+  "w": 0.6,
+  "c1": 2.5,
+  "c2": 2.5,
+  "max_iter_sem_melhoria": 10,
+  "performance": {
+    "media_valor": -1044.8004111458033,
+    "std_valor": 0.2736125066971548,
+    "media_iteracoes": 21.333333333333332,
+    "score_composto": 0.9102534738503365
+  },
+  "data_teste": "20251201_171717",
+  "total_combinacoes_testadas": 1600,
+  "execucoes_por_combinacao": 3
+}
+

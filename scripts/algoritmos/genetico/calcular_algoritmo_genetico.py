@@ -2,7 +2,7 @@
 import numpy as np
 import random
 from scripts.funcoes_para_minizar import w18
-from constants import constantes_ag
+from constants import constantes_ag, minimo_funcao
 
 def calcular_algoritmo_genetico(
     numero_individuos=constantes_ag.NUMERO_INDIVIDUOS,
@@ -12,7 +12,6 @@ def calcular_algoritmo_genetico(
     limites=constantes_ag.LIMITES_ESPACO_BUSCA,
     intensidade_mutacao=constantes_ag.INTENSIDADE_MUTACAO,
     geracoes_sem_melhoria=constantes_ag.GERACOES_SEM_MELHORIA,  # Número de gerações sem melhoria para parar
-    tolerancia_melhoria=constantes_ag.TOLERANCIA_MELHORIA,   # Tolerância mínima para considerar melhoria
     salvar_posicoes=False,
 ):
     """
@@ -91,10 +90,8 @@ def calcular_algoritmo_genetico(
         print(melhor_da_geracao)
         print(melhor_fitness_global)
         if round(melhor_da_geracao[1], 2) > round(melhor_fitness_global, 2):
-            melhoria = round(melhor_da_geracao[1], 2) - round(melhor_fitness_global, 2)
-            if melhoria > tolerancia_melhoria:
-                melhorou = True
-                contador_sem_melhoria = 0
+            melhorou = True
+            contador_sem_melhoria = 0
             melhor_fitness_global = melhor_da_geracao[1]
             melhor_global = melhor_da_geracao[0].copy()
         
@@ -109,7 +106,7 @@ def calcular_algoritmo_genetico(
         # Imprimindo progresso a cada 10 gerações
         if (geracao + 1) % 10 == 0:
             status_convergencia = f" (sem melhoria: {contador_sem_melhoria})" if contador_sem_melhoria > 0 else ""
-            print(f"   Geração {geracao + 1:3d}: {valor_w18_atual:.6f}{status_convergencia}")
+            print(f"   Geração {geracao + 1:2d}: {valor_w18_atual:.2f}{status_convergencia}")
 
         # Salvar posições da população atual
         if salvar_posicoes:
@@ -123,6 +120,11 @@ def calcular_algoritmo_genetico(
         print(f"Motivo da parada: Convergência (sem melhoria por {geracoes_sem_melhoria} gerações)")
     else:
         print("Motivo da parada: Número máximo de gerações atingido")
+
+    funcao_convergiu_para_minimo_esperado = False
+    diferenca_para_minimo = abs(melhor_valor_w18 - minimo_funcao.MINIMO_FUNCAO_W18)
+    if diferenca_para_minimo <= minimo_funcao.TOLERANCIA_DIVERGENCIA:
+        funcao_convergiu_para_minimo_esperado = True
     
     dados = {
         'melhor_posicao': melhor_global,
@@ -133,11 +135,11 @@ def calcular_algoritmo_genetico(
         "taxa_crossover": taxa_crossover,
         "taxa_mutacao": taxa_mutacao,
         "intensidade_mutacao": intensidade_mutacao,
-        "tolerancia_melhoria": tolerancia_melhoria,
         "geracoes_sem_melhoria": geracoes_sem_melhoria,
         "numero_geracoes": numero_geracoes,
         "posicoes_populacao": posicoes_populacao,
-        "numero_execucoes_funcao_objetivo": numero_execucoes_funcao_objetivo
+        "numero_execucoes_funcao_objetivo": numero_execucoes_funcao_objetivo,
+        "funcao_convergiu_para_minimo_esperado": funcao_convergiu_para_minimo_esperado
     }
 
     exibir_dados_ag(dados)
@@ -170,12 +172,12 @@ def selecao_torneio(populacao, tamanho_torneio=3):
 
 def crossover_blx_alfa(pai1, pai2, alfa=0.5):
     """Crossover BLX-α entre dois pais."""
-    filho1 = np.zeros(2)
+    filho1 = np.zeros(2) # Criar arrays numpy vazios para os filhos
     filho2 = np.zeros(2)
     
     for i in range(2):
-        # Calcular limites do intervalox
-        min_val = min(pai1[i], pai2[i])
+        # Calcular limites do intervalo
+        min_val = min(pai1[i], pai2[i]) 
         max_val = max(pai1[i], pai2[i])
         intervalo = max_val - min_val
         
@@ -214,7 +216,6 @@ def exibir_dados_ag(dados):
     taxa_crossover = dados['taxa_crossover']
     taxa_mutacao = dados['taxa_mutacao']
     intensidade_mutacao = dados['intensidade_mutacao']
-    tolerancia_melhoria = dados['tolerancia_melhoria']
     geracoes_sem_melhoria = dados['geracoes_sem_melhoria']
     numero_geracoes = dados['numero_geracoes']
     numero_execucoes_funcao_objetivo = dados['numero_execucoes_funcao_objetivo']
@@ -229,6 +230,7 @@ def exibir_dados_ag(dados):
     print(f"{'Valor mínimo encontrado':<40} {round(melhor_valor, 2):>28}")
     print(f"{'Iterações realizadas':<40} {quantidade_geracoes_realizadas:>28}")
     print(f"{'Número de execuções da função objetivo':<40} {numero_execucoes_funcao_objetivo:>28}")
+    print(f"{'Convergiu para mínimo esperado':<40} {str(dados.get('funcao_convergiu_para_minimo_esperado', False)):>28}")
     print("-"*70)
     print(f"{'Parametros do PSO':<40} {'Valor':>28}")
     print("-"*70)
@@ -236,7 +238,6 @@ def exibir_dados_ag(dados):
     print(f"{'Taxa de Crossover':<40} {taxa_crossover:>28.2f}")
     print(f"{'Taxa de Mutação':<40} {taxa_mutacao:>28.2f}")
     print(f"{'Intensidade da Mutação':<40} {intensidade_mutacao:>28.2f}")
-    print(f"{'Tolerância de Melhoria':<40} {tolerancia_melhoria:>28.2f}")
     print(f"{'Gerações sem Melhoria':<40} {geracoes_sem_melhoria:>28}")
     print(f"{'Número de Gerações':<40} {numero_geracoes:>28}")
     print("="*70 + "\n")
