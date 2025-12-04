@@ -27,7 +27,7 @@ def calcular_algoritmo_genetico(
     # Histórico para acompanhar convergência
     historico_fitness = []
     melhor_global = None
-    melhor_fitness_global = float('-inf')
+    melhor_fitness_global = float('-inf') # o float('-inf') representa o menor valor possível
     contador_sem_melhoria = 0
     posicoes_populacao = [] if salvar_posicoes else None
     
@@ -47,7 +47,7 @@ def calcular_algoritmo_genetico(
         
         # Manter os melhores (elitismo - 10%)
         populacao_ordenada = sorted(populacao, key=lambda x: x[1], reverse=True)
-        num_elites = max(2, int(0.1 * numero_individuos))
+        num_elites = max(2, int(0.1 * numero_individuos)) # Pelo menos 2 elites, mas pode ser 10% da população
         for i in range(num_elites):
             nova_populacao.append(populacao_ordenada[i])
         
@@ -58,14 +58,14 @@ def calcular_algoritmo_genetico(
             pai2 = selecao_torneio(populacao)
             
             # Crossover
-            if random.random() < taxa_crossover:
+            if random.random() < taxa_crossover: 
                 filho1, filho2 = crossover_blx_alfa(pai1, pai2)
             else:
                 filho1, filho2 = pai1.copy(), pai2.copy()
             
             # Mutação
-            filho1 = mutacao_gaussiana(filho1, taxa_mutacao, intensidade_mutacao)
-            filho2 = mutacao_gaussiana(filho2, taxa_mutacao, intensidade_mutacao)
+            filho1 = mutacao_uniforme(filho1, taxa_mutacao, intensidade_mutacao)
+            filho2 = mutacao_uniforme(filho2, taxa_mutacao, intensidade_mutacao)
             
             # Avaliar fitness dos filhos
             fitness1 = avaliar_fitness(filho1)
@@ -102,11 +102,6 @@ def calcular_algoritmo_genetico(
         # Verificando critério de parada por convergência
         if contador_sem_melhoria >= geracoes_sem_melhoria:
             break
-        
-        # Imprimindo progresso a cada 10 gerações
-        if (geracao + 1) % 10 == 0:
-            status_convergencia = f" (sem melhoria: {contador_sem_melhoria})" if contador_sem_melhoria > 0 else ""
-            print(f"   Geração {geracao + 1:2d}: {valor_w18_atual:.2f}{status_convergencia}")
 
         # Salvar posições da população atual
         if salvar_posicoes:
@@ -170,12 +165,13 @@ def selecao_torneio(populacao, tamanho_torneio=3):
     melhor = max(candidatos, key=lambda x: x[1]) # Seleciona o indivíduo com melhor fitness
     return melhor[0]
 
-def crossover_blx_alfa(pai1, pai2, alfa=0.5):
+def crossover_blx_alfa(pai1, pai2, alfa=0.5): 
     """Crossover BLX-α entre dois pais."""
     filho1 = np.zeros(2) # Criar arrays numpy vazios para os filhos
     filho2 = np.zeros(2)
-    
+
     for i in range(2):
+        print(f"Pai1 gene {i}: {pai1[i]}, Pai2 gene {i}: {pai2[i]}")
         # Calcular limites do intervalo
         min_val = min(pai1[i], pai2[i]) 
         max_val = max(pai1[i], pai2[i])
@@ -195,14 +191,15 @@ def crossover_blx_alfa(pai1, pai2, alfa=0.5):
     
     return filho1, filho2
 
-def mutacao_gaussiana(individuo, taxa_mutacao, intensidade=10.0):
-    """Aplica mutação gaussiana ao indivíduo."""
+def mutacao_uniforme(individuo, taxa_mutacao, intensidade=10.0): # a intensidade define o quanto a mutação pode alterar o gene
+    """Aplica mutação uniforme ao indivíduo."""
     individuo_mutado = individuo.copy()
     
-    for i in range(len(individuo_mutado)):
+    for i in range(len(individuo_mutado)): # Para cada gene do indivíduo
         if random.random() < taxa_mutacao:
-            # Adicionar ruído gaussiano
-            individuo_mutado[i] += np.random.normal(0, intensidade)
+            # Adicionar perturbação uniforme
+            perturbacao = np.random.uniform(-intensidade, intensidade)
+            individuo_mutado[i] += perturbacao
             # Manter nos limites
             individuo_mutado[i] = np.clip(individuo_mutado[i], -500, 500)
     

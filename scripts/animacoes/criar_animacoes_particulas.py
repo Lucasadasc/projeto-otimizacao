@@ -58,9 +58,9 @@ def criar_animacao_particulas(
     print("Criando animação...")
     
     resolucao = 201 
-    x = np.linspace(limites[0], limites[1], resolucao)
+    x = np.linspace(limites[0], limites[1], resolucao) # Vetor de valores x
     y = np.linspace(limites[0], limites[1], resolucao)
-    X, Y = np.meshgrid(x, y)
+    X, Y = np.meshgrid(x, y) # Cria uma grade 2D a partir dos vetores x e y
     Z = w18(X, Y)
 
     frames = []    

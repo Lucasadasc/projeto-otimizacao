@@ -45,7 +45,7 @@ def calcular_pso(
     
     # Critério de parada por estagnação
     iteracoes_sem_melhoria = 0
-    melhor_valor_anterior = float('inf')
+    melhor_valor_anterior = float('inf')    
     
     # Capturar posições das partículas (se solicitado)
     posicoes_particulas = [] if capturar_posicoes else None

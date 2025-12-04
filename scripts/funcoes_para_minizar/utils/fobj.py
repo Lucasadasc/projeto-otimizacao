@@ -29,7 +29,7 @@ def calcular_f10(x, y):
 # zsh(i,j)=0.5-((sin(sqrt(xs(i)^2+ys(j)^2)))^2-0.5)./(1+0.1*(xs(i)^2+ys(j)^2))^2;
 def calcular_zhs():
     xs = np.asarray(np.arange(-10, 10.1, 0.1)) # xs =-10:0.1:10;
-    ys = np.asarray(np.arange(-10, 10.1, 0.1)) 
+    ys = np.asarray(np.arange(-10, 10.1, 0.1)) # o as transforma em array numpy ys =-10:0.1:10;
 
     numerador = np.sin(np.sqrt(xs**2 + ys**2))**2 -0.5
     denominador = (1+0.1*(xs**2 + ys**2))**2
